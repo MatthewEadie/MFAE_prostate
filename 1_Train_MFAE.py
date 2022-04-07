@@ -7,7 +7,7 @@
 
 import numpy as np
 import os
-from utils.model import model_MFUNet_Colour, model_optimiser, model_loss
+from utils.model import model_MFAE, model_SIAE, model_optimiser, model_loss
 import tensorflow as tf
 import datetime
 import cv2
@@ -23,8 +23,7 @@ earlyStop_callback = tf.keras.callbacks.EarlyStopping(monitor='mae', patience=5)
 #----------
 # Settings
 LR_Size = 256
-number_rots = 10
-Channels = number_rots * 3 #Number of segments
+Channels = 11 #Number of segments
 batch_size = 1
 epochs = 500
 path_datasets = "image_stacks"
@@ -46,60 +45,46 @@ if gpus:
     print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPUs")
 
 
+#Load datasets for model to use for training and validation
 if(load_dataset):
+    #Load validation dataset
+    X_val_dataset = np.load(os.path.join(path_datasets, "X_val4D.npy")) #41,256,256,11
+    Y_val_dataset = np.load(os.path.join(path_datasets, "Y_val4D.npy")) #41,256,256,3
 
     #Load training dataset
-    X_val_dataset = np.load(os.path.join(path_datasets, "X_val4D.npy")) #(88,256,256,4)
-    Y_val_dataset = np.load(os.path.join(path_datasets, "Y_val4D.npy")) #(88,256,256,4)
-
-    X_train_dataset = np.load(os.path.join(path_datasets, "X_train4D.npy")) #(88,256,256,4)
-    Y_train_dataset = np.load(os.path.join(path_datasets, "Y_train4D.npy")) #(88,256,256,4)
-
-
-
-    #cv2.imshow("GT",Y_train[0])
-    #cv2.imshow("Train",X_train[0,:,:,:3])
-
-    #print(f"X_val shape: {X_val.shape}")
-    #print(f"Y_val shape: {Y_val.shape}")
-
-    #print(f"X_train shape: {X_train.shape}")
-    #print(f"Y_train shape: {Y_train.shape}")
+    X_train_dataset = np.load(os.path.join(path_datasets, "X_train4D.npy")) #165,256,256,11
+    Y_train_dataset = np.load(os.path.join(path_datasets, "Y_train4D.npy")) #165,256,256,3
 
     
+#Load model used for immage reconstruction
 if(load_model):
-    MF_UNet = model_MFUNet_Colour(LR_Size, Channels)
-    MF_UNet.summary()
+    MF_UNet = model_MFAE(LR_Size, Channels) #Load model 
+    MF_UNet.summary() #Print summary of model
 
-    MF_UNet_optimiser = model_optimiser()
+    MF_UNet_optimiser = model_optimiser() #Build model optimiser
 
-        # Build the VGG-19 Model, for Content Loss 
-    VGG_19 = tf.keras.applications.VGG19(include_top=False,
-                                         input_shape=(LR_Size, LR_Size, 3))
-
-    VGG = tf.keras.Model(inputs=VGG_19.input,
-                         outputs=VGG_19.get_layer('block5_conv4').output)
-
-    loss_compile = model_loss
+    loss_compile = model_loss #Load model loss 
 
 
 if(train_model):
+    #Compile model, must be done before training
     MF_UNet.compile(optimizer = MF_UNet_optimiser,
                     loss = loss_compile,
                     metrics = ['mae','mse']
                     )
 
-    history = MF_UNet.fit(x = X_train_dataset,
-                          y = Y_train_dataset,
-                          validation_data = (X_val_dataset, Y_val_dataset),
-                          batch_size = batch_size,
-                          epochs = epochs,
-                          callbacks = [tensorboard_callback, earlyStop_callback], 
+    #Train model using X,Y training dataset and X,Y validation datasets
+    history = MF_UNet.fit(x = X_train_dataset, #LR training dataset
+                          y = Y_train_dataset, #HR training dataset
+                          validation_data = (X_val_dataset, Y_val_dataset), #Validation datasets
+                          batch_size = batch_size,  #Number of image to train on at once
+                          epochs = epochs, #Maximum bumber of epochs to train
+                          callbacks = [tensorboard_callback, earlyStop_callback], #Using early stop callback to avoid overtraining
                           verbose = 1, 
                           use_multiprocessing = True
                           )
 
-    MF_UNet.save(model_filepath)
+    MF_UNet.save(model_filepath) #Save model to use on testing dataset
 
 
 cv2.waitKey(0)

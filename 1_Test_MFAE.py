@@ -11,6 +11,8 @@ import os
 from tensorflow.keras.models import load_model
 from cv2 import imwrite
 from math import floor
+import time
+
 
 #----------
 # Settings
@@ -27,9 +29,11 @@ test_model = False
 reconstruct_dataset = True
 
 if(load_datasets):
+    #Load testing datasets
     X_test = np.load(os.path.join(path_datasets, "X_test4D.npy")) #(32,256,256,4) Images to run through model
     Y_test = np.load(os.path.join(path_datasets, "Y_test4D.npy")) #(32,256,256,4) HR images for comparison
 
+    #Load trained model
     MF_UNet = load_model(model_fp,compile=False)
     MF_UNet.compile(optimizer='adam',loss='mse')
 
@@ -37,7 +41,7 @@ if(load_datasets):
     print(f"Shape of Y_test: {Y_test.shape}")
 
 
-
+#Function to test model before committing to reconstructing entire testing dataset
 if(test_model):
     test_image = X_test[test_index:test_index+1]
 
@@ -59,16 +63,16 @@ if(test_model):
 
 
 
-import time
-
-print("hello")
 
 
-start = time.time()
+
 
 if(reconstruct_dataset):
+    #If directory to save SR images doesn't exist make it
     if not os.path.isdir(save_path):
         os.mkdir(save_path)
+
+    start = time.time() #Start time to calculate time per image
 
     for index in range(floor(X_test.shape[0])):
         test_image = X_test[index:index+1,]
@@ -77,6 +81,7 @@ if(reconstruct_dataset):
 
 
         plt.imsave(save_path + "/SR{}.png".format(index), X_pred[0,:,:,0], cmap='gray')
-
-end = time.time()
-print(f'Time taken: {end - start}seconds')
+    
+    end = time.time() #Endtime to calculate time per image
+    print(f'Time taken: {end - start}seconds')
+    print(f'Time per image: {(end - start)/X_test.shape[0]}seconds')
