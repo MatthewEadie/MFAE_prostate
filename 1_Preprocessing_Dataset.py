@@ -34,12 +34,12 @@ bundle_resolution = 0.32 #um/pixel
 
 rot_left = -10
 rot_right = 10
-rot_segments = 10
+rot_segments = 11
 
 create_rotations = False
 Resize_Images = False
-Slice_Originals = False
-Create_Overlays = False
+Slice_Originals = True
+Create_Overlays = True
 Create_4DStack = True
 Create_1DStack = False
 #----------
