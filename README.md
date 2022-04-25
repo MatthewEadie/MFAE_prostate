@@ -32,7 +32,7 @@ Each file is described in detail below.
  
  
 # 2.0 Python script notes
-This project is broken down into three scrips. The frist will proccess the original images and output the stacked training/testing datasets to be used by the model in training and testing respectively. The other two contrain the code to train and test the MF-UNet model respectively. Each code is broek down into sections below.
+This project is broken down into three scrips. The frist proccesses the original images and outputs the stacked training, validation and testing datasets to be used by the model in training and testing. The other two contain the code to train and test the MF-UNet model respectively. Each code is broek down into sections below.
 
 ## 2.1 Preprocessing_Dataset.py
 The preprocessing python script is split into three sections. 
