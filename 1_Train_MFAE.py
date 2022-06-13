@@ -11,7 +11,10 @@ from utils.model import model_MFAE, model_SIAE, model_optimiser, model_loss
 import tensorflow as tf
 import datetime
 import cv2
+import time
 
+
+os.environ['TF_ENABLE_GPU_GARBAGE_COLLECTION'] = 'false'
 
 """
 log_dir can save the training logical of the Network 
@@ -27,7 +30,7 @@ Channels = 11 #Number of segments
 batch_size = 1
 epochs = 500
 path_datasets = "image_stacks"
-model_filepath = "MFUNet_trained" + str(epochs)
+model_filepath = "MFUNet_trained" + str(epochs) + "_" + str(Channels)
 #----------
 
 
@@ -73,6 +76,8 @@ if(train_model):
                     metrics = ['mae','mse']
                     )
 
+    start = time.time()
+
     #Train model using X,Y training dataset and X,Y validation datasets
     history = MF_UNet.fit(x = X_train_dataset, #LR training dataset
                           y = Y_train_dataset, #HR training dataset
@@ -83,6 +88,9 @@ if(train_model):
                           verbose = 1, 
                           use_multiprocessing = True
                           )
+
+    end = time.time() #Endtime to calculate time per image
+    print(f'Time taken: {end - start}seconds')
 
     MF_UNet.save(model_filepath) #Save model to use on testing dataset
 

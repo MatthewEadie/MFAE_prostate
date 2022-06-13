@@ -36,9 +36,9 @@ rot_right = 10
 rot_segments = 11
 
 create_thresh300 = False
-create_rotations = False
-Slice_Originals = False
-Create_Overlays = False
+create_rotations = True
+Slice_Originals = True
+Create_Overlays = True
 Create_4DStack = True
 Create_1DStack = False
 #----------
@@ -51,7 +51,7 @@ if(create_thresh300):
     light_filed = cv.imread("./image_datasets/originals/lightfield.tif",0)
 
     #Binarise image
-    ret,thresh = cv.threshold(light_filed,51,255,cv.THRESH_BINARY)
+    ret,thresh = cv.threshold(light_filed,51,255,cv2.THRESH_BINARY)
 
     #Cut out larger 300x300 image for rotation
     thresh300 = np.zeros((300,300))

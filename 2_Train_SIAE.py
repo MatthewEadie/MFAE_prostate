@@ -7,7 +7,7 @@
 
 import numpy as np
 import os
-from utils.model import model_UNet, model_optimiser, model_loss
+from utils.model import model_SIAE, model_optimiser, model_loss
 import tensorflow as tf
 import datetime
 import cv2
@@ -27,7 +27,7 @@ Channels = 3
 batch_size = 1
 epochs = 500
 path_datasets = "image_stacks"
-model_filepath = "UNet_trained" + str(epochs)
+model_filepath = "SIAE_trained" + str(epochs)
 #----------
 
 
@@ -54,33 +54,13 @@ if(load_dataset):
     X_val = np.load(os.path.join(path_datasets, "X_val1D.npy")) #(352,256,256,3)
     Y_val = np.load(os.path.join(path_datasets, "Y_val1D.npy")) #(352,256,256,3)
 
-    #cv2.imshow("X_val", X_val[0])
-    #cv2.imshow("Y_val", Y_val[0])
 
-    #cv2.imshow("X_train", X_train[0])
-    #cv2.imshow("Y_train", Y_train[0])
-
-
-    #print(f"X_val shape: {X_val.shape}")
-    #print(f"Y_val shape: {Y_val.shape}")
-
-    #print(f"X_train shape: {X_train.shape}")
-    #print(f"Y_train shape: {Y_train.shape}")
-
-cv2.waitKey(0)
         
 if(load_model):
-    MF_UNet = model_UNet(LR_Size, Channels)
+    MF_UNet = model_SIAE(LR_Size, Channels)
     MF_UNet.summary()
 
     MF_UNet_optimiser = model_optimiser()
-
-    #    # Build the VGG-19 Model, for Content Loss 
-    #VGG_19 = tf.keras.applications.VGG19(include_top=False,
-    #                                     input_shape=(LR_Size, LR_Size, 3))
-
-    #VGG = tf.keras.Model(inputs=VGG_19.input,
-    #                     outputs=VGG_19.get_layer('block5_conv4').output)
 
     loss_compile = model_loss
 
@@ -102,3 +82,6 @@ if(train_model):
                           )
 
     MF_UNet.save(model_filepath)
+
+
+cv2.waitKey(0)
