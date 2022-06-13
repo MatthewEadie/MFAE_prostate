@@ -30,7 +30,7 @@ Channels = 11 #Number of segments
 batch_size = 1
 epochs = 500
 path_datasets = "image_stacks"
-model_filepath = "MFUNet_trained" + str(epochs) + "_" + str(Channels)
+model_filepath = "MFAE_Models/MFUNet_trained" + str(epochs) + "_" + str(Channels)
 #----------
 
 

@@ -17,10 +17,10 @@ import time
 #----------
 # Settings
 channels = 15
-model_fp = "./MFUNet_trained500_" + str(channels) 
+model_fp = "MFAE_Models/MFUNet_trained500_" + str(channels) 
 test_index = 3 #index of image to test model on
 path_datasets = "image_stacks"
-save_path = "MFAE_4DImages_" + str(channels) 
+save_path = "MFAE_4DImages/MFAE_4DImages_" + str(channels) 
 #----------
 
 
