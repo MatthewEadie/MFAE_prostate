@@ -1,4 +1,4 @@
-<h1 align="center"> MFAE Imaged Prostate Slide </h1>
+<h1 align="center"> Fibre bundle image reconstruction using convolutional neural networks and bundle rotation in endomicroscopy </h1>
 
 Multi frame super resolution (MFSR) has been thought of the next step in certain super resolution pracices. With the introduction of using multiple images with high temperal resolution they can be combined to form a single high resolution (HR) image.
 
