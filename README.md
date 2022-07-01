@@ -4,7 +4,7 @@ Multi frame super resolution (MFSR) has been thought of the next step in certain
 
 The dataset used in this project was aquired using a custom build setup of a slide provided by Wael Ageeli.
 
-![alt text](https://github.com/MatthewEadie/MFAE_prostate/git_media/Model_diagram.jpg?raw=true)
+![Model diagram](git_media/Model_diagram.png?raw=true)
 
 # 1.0 Getting started:
 Requirements:
