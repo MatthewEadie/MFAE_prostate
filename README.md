@@ -5,7 +5,7 @@ Multi frame super resolution (MFSR) has been thought of the next step in certain
 The dataset used in this project was aquired using a custom build setup of a slide provided by Wael Ageeli.
 
 <p align="center">
-![Model diagram](git_media/Model_diagram.png?raw=true)
+<img src="git_media/Model_diagram.png">
 </p>
 
 # 1.0 Getting started:
