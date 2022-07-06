@@ -60,6 +60,11 @@ Finally the testing script.
 # 3.0 Results
 The resulting images were compared to gaussian blurring, linear interpolation, single image super resolution, and our MFAE.
 <p align="center">
-<img src="git_media/Reconstruction_comparison.png" width="100%">
-<img src="git_media/comparison_table.png" width="100%">
+
+<img src="git_media/Reconstruction_comparison.PNG" width="100%">
+<figcaption>Fig 1. Reconstruction of </figcaption>
+
+<img src="git_media/comparison_table.PNG" width="100%">
+<figcaption>Fig 1. Reconstruction of </figcaption>
+
 </p>
