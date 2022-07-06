@@ -1,6 +1,12 @@
 <h1 align="center"> Fibre bundle image reconstruction using convolutional neural networks and bundle rotation in endomicroscopy </h1>
 
-Multi frame super resolution (MFSR) has been thought of the next step in certain super resolution pracices. With the introduction of using multiple images with high temperal resolution they can be combined to form a single high resolution (HR) image.
+Fibre-bundle endomicroscopy suffers from imaging problems mainly the honey-comb effect. Fibre bundle are made from many individual fibres, up to 30,000, that are surounded by cladding to stop light from transfering between each of the fibres. It is this cladding the all so stop light from the sample reaching the imaging camera, this is known as the honeycomb effect for it's disticnt pattern.
+
+Different methods have been used to attempt to remedy this effect such as Gaussian blurring, linear interpolat and most recently super resolution. Multi frame super resolution (MFSR) has been thought of the next step in certain super resolution pracices. With the introduction of using multiple images with high temperal resolution they can be combined to form a single high resolution (HR) image.
+
+Multi image super resolution is a promising approach to improving the reconstruction of fibre bundle images. Endomicroscopy already oversamples areas of tissue thereby generating many images of the same sample with minor changes in alignment. In this project we synthetically generate fibre-bundle images and rotate a fibe mask to recreate the effect of rotating the fibre on a sample area to oversample the tissue. Using these images a multiframe super resolution model was designed to reconstuct the ground truth image. We were able to improve the structural similarity index measurement (SSIM) of the image by 1.48 fold compared to linear interpolation.
+
+
 
 The dataset used in this project was aquired using a custom build setup of a slide provided by Wael Ageeli.
 
@@ -9,7 +15,7 @@ The dataset used in this project was aquired using a custom build setup of a sli
 </p>
 
 # 1.0 Getting started:
-Requirements:
+## Requirements
 - Python 3.9 
 - Tensorflow 2.6
 - Numpy 1.21.2
@@ -22,7 +28,7 @@ Requirements:
 This code was tested using Microsoft visual studio 2019 version 16.11.3
 
 
-Default order of execution
+## Order of execution
 1. Preprocessing_Dataset.py
 2. Train_MFAE.py 
 3. Test_MFAE.py
@@ -50,3 +56,10 @@ Finally the testing script has two sections for use and one section that has bee
 - The first section, loads the LR and HR testing datasets created by the preprocessing script along with the trained model created by the previous script. Note: The HR images are only loaded for displaying a comparison of SR images.
 - Each of the images in the testing dataset are then input into the model and a predicted output image is returned which is then saved into a separate folder.
 - The middle section of this code is only used for testing purposes. The code will only input one image into the model and display a figure containing the ground truth, low resolution and super resolution image. None of these images are saved.
+
+# 3.0 Results
+The resulting images were compared to gaussian blurring, linear interpolation, single image super resolution, and our MFAE.
+<p align="center">
+<img src="git_media/Reconstruction_comparison.png" width="100%">
+<img src="git_media/comparison_table.png" width="100%">
+</p>
