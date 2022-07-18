@@ -58,13 +58,17 @@ Finally the testing script.
 - The middle section of this code is only used for testing purposes. The code will only input one image into the model and display a figure containing the ground truth, low resolution and super resolution image. None of these images are saved.
 
 # 3.0 Results
-The resulting images were compared to gaussian blurring, linear interpolation, single image super resolution, and our MFAE.
+The resulting images were compared to gaussian blurring, linear interpolation, single image super resolution, and our MFAE (Fig 1.). Red arrows have been added to each reconstruction to draw attention to a small element that improves in detail with each method. Table 1 shows the numerical analysis results performed on each method compared to the ground truth image. 
+
+It can be seen that the SSIM has more than doubled when using MFAE compared to Gaussian blurring. 
+
+
 <p align="center">
 
 <img src="git_media/Reconstruction_comparison.PNG" width="100%">
-<figcaption>Fig 1. Reconstruction of </figcaption>
+<figcaption>Fig 1. reconstruction method comparison on acquired prostate images. (a) ground truth. (b) averaged fibre bundle. (c) gaussian blurring. (d) linear interpolation. (e)single image auto encoder. (f) multi-frame autoencoder. </figcaption>
 
 <img src="git_media/comparison_table.PNG" width="100%">
-<figcaption>Fig 1. Reconstruction of </figcaption>
+<figcaption>Table 1. Image quality assessment. </figcaption>
 
 </p>
