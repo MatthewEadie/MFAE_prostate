@@ -60,7 +60,7 @@ Finally the testing script.
 # 3.0 Results
 The resulting images were compared to gaussian blurring, linear interpolation, single image super resolution, and our MFAE (Fig 1.). Red arrows have been added to each reconstruction to draw attention to a small element that improves in detail with each method. Table 1 shows the numerical analysis results performed on each method compared to the ground truth image. 
 
-It can be seen that the SSIM has more than doubled when using MFAE compared to Gaussian blurring. 
+It can be seen from table 1 that the SSIM has more than doubled when using MFAE compared to Gaussian blurring. This gives a promising result as many sources have cited SSIM as being useful for image analysis.
 
 
 <p align="center">
