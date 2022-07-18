@@ -1,6 +1,12 @@
 <h1 align="center"> Fibre bundle image reconstruction using convolutional neural networks and bundle rotation in endomicroscopy </h1>
 
-Multi frame super resolution (MFSR) has been thought of the next step in certain super resolution pracices. With the introduction of using multiple images with high temperal resolution they can be combined to form a single high resolution (HR) image.
+Fibre-bundle endomicroscopy suffers from imaging problems mainly the honey-comb effect. Fibre bundle are made from many individual fibres, up to 30,000, that are surounded by cladding to stop light from transfering between each of the fibres. It is this cladding the all so stop light from the sample reaching the imaging camera, this is known as the honeycomb effect for it's disticnt pattern.
+
+Different methods have been used to attempt to remedy this effect such as Gaussian blurring, linear interpolat and most recently super resolution. Multi frame super resolution (MFSR) has been thought of the next step in certain super resolution pracices. With the introduction of using multiple images with high temperal resolution they can be combined to form a single high resolution (HR) image.
+
+Multi image super resolution is a promising approach to improving the reconstruction of fibre bundle images. Endomicroscopy already oversamples areas of tissue thereby generating many images of the same sample with minor changes in alignment. In this project we synthetically generate fibre-bundle images and rotate a fibe mask to recreate the effect of rotating the fibre on a sample area to oversample the tissue. Using these images a multiframe super resolution model was designed to reconstuct the ground truth image. We were able to improve the structural similarity index measurement (SSIM) of the image by 1.48 fold compared to linear interpolation.
+
+
 
 The dataset used in this project was aquired using a custom build setup of a slide provided by Wael Ageeli.
 
@@ -9,7 +15,7 @@ The dataset used in this project was aquired using a custom build setup of a sli
 </p>
 
 # 1.0 Getting started:
-Requirements:
+## Requirements
 - Python 3.9 
 - Tensorflow 2.6
 - Numpy 1.21.2
@@ -22,7 +28,7 @@ Requirements:
 This code was tested using Microsoft visual studio 2019 version 16.11.3
 
 
-Default order of execution
+## Order of execution
 1. Preprocessing_Dataset.py
 2. Train_MFAE.py 
 3. Test_MFAE.py
@@ -36,7 +42,7 @@ This project is broken down into three scrips. The frist proccesses the original
 ## 2.1 Preprocessing_Dataset.py
 The preprocessing python script is split into three sections. 
 - The first divides the original images into 256x256 slices that will be used as the HR ground truth. 
-- The slices are then Overlayed with the selected binary fibre bundle mask, the mask is rotated three times to produce four images of the same spot but with cores in different locations, synthetically creating a higher temporal resolution. Each set of four LR images are added into an array of N,256,256,4 where N is the number of slices. 
+- The slices are then Overlayed with the selected binary fibre bundle mask, the mask is rotated from -10 degrees to +10 degrees, a user defined number of times, synthetically replicating the fibre-bundle rotation method. Each set of LR images are added into an array of N,256,256,C where N is the number of slices and C in the number of channels (rotations). 
 - The final section saves the arrays into an output folder as ".npy" so they can be read in easier.
 
 ## 2.2 Train_MFAE.py
@@ -46,7 +52,23 @@ To train the model the script is again split into three sections for easier use.
 - Finally the model is compiled with the optimiser and loss funtion, then trained using the dataset. Once the training is complete the model is saved into a specified folder. This will be used to load the model for testing.
 
 ## 2.3 Test_MFAE.py
-Finally the testing script has two sections for use and one section that has been set to false as it's used for testing the output.
+Finally the testing script.
 - The first section, loads the LR and HR testing datasets created by the preprocessing script along with the trained model created by the previous script. Note: The HR images are only loaded for displaying a comparison of SR images.
 - Each of the images in the testing dataset are then input into the model and a predicted output image is returned which is then saved into a separate folder.
 - The middle section of this code is only used for testing purposes. The code will only input one image into the model and display a figure containing the ground truth, low resolution and super resolution image. None of these images are saved.
+
+# 3.0 Results
+The resulting images were compared to gaussian blurring, linear interpolation, single image super resolution, and our MFAE (Fig 1.). Red arrows have been added to each reconstruction to draw attention to a small element that improves in detail with each method. Table 1 shows the numerical analysis results performed on each method compared to the ground truth image. 
+
+It can be seen that the SSIM has more than doubled when using MFAE compared to Gaussian blurring. 
+
+
+<p align="center">
+
+<img src="git_media/Reconstruction_comparison.PNG" width="100%">
+<figcaption>Fig 1. reconstruction method comparison on acquired prostate images. (a) ground truth. (b) averaged fibre bundle. (c) gaussian blurring. (d) linear interpolation. (e)single image auto encoder. (f) multi-frame autoencoder. </figcaption>
+
+<img src="git_media/comparison_table.PNG" width="100%">
+<figcaption>Table 1. Image quality assessment. </figcaption>
+
+</p>
